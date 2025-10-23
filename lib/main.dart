@@ -1,7 +1,7 @@
- import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
 void main() {
-   runApp(const App());
+  runApp(const App());
 }
 
 class App extends StatelessWidget {
@@ -9,7 +9,15 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return MaterialApp(
+      title: 'Sandwich Shop App',
+      home: Scaffold(
+        appBar: AppBar(title: const Text('Sandwich Counter')),
+        body: const Center(
+          child: Text('Welcome to the Sandwich Shop!'),
+        ),
+      ),
+    );
   }
 }
 
