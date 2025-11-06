@@ -9,9 +9,10 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: 'Sandwich Shop App',
-      home: OrderScreen(maxQuantity: 5),
+      theme: ThemeData(useMaterial3: true),
+      home: const OrderScreen(maxQuantity: 5),
     );
   }
 }
@@ -29,6 +30,7 @@ class OrderScreen extends StatefulWidget {
 
 class _OrderScreenState extends State<OrderScreen> {
   int _quantity = 0;
+  String _selectedSize = 'Footlong';
 
   void _increaseQuantity() {
     if (_quantity < widget.maxQuantity) {
@@ -56,10 +58,37 @@ class _OrderScreenState extends State<OrderScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            // SegmentedButton to pick Footlong or Six-inch
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: Column(
+                children: [
+                  SegmentedButton<String>(
+                    segments: const <ButtonSegment<String>>[
+                      ButtonSegment(value: 'Footlong', label: Text('Footlong')),
+                      ButtonSegment(value: 'Six-inch', label: Text('Six-inch')),
+                    ],
+                    selected: <String>{_selectedSize},
+                    onSelectionChanged: (Set<String> newSelection) {
+                      setState(() {
+                        _selectedSize = newSelection.first;
+                      });
+                    },
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
+            // OrderItemDisplay without the blue container
             OrderItemDisplay(
               _quantity,
-              'Footlong',
+              _selectedSize,
             ),
+
+            const SizedBox(height: 16),
+
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -72,6 +101,7 @@ class _OrderScreenState extends State<OrderScreen> {
                   ),
                   child: const Text('Add'),
                 ),
+                const SizedBox(width: 12),
                 ElevatedButton(
                   onPressed: _quantity > 0 ? _decreaseQuantity : null,
                   style: ElevatedButton.styleFrom(
@@ -97,6 +127,10 @@ class OrderItemDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text('$quantity $itemType sandwich(es): ${'🥪' * quantity}');
+    return Text(
+      '$quantity $itemType sandwich(es): ${'🥪' * quantity}',
+      style: const TextStyle(color: Colors.black),
+      textAlign: TextAlign.center,
+    );
   }
 }
