@@ -13,14 +13,25 @@ class App extends StatelessWidget {
       title: 'Sandwich Shop App',
       home: Scaffold(
         appBar: AppBar(title: const Text('Sandwich Counter')),
+        // The bit that you need to update starts from here
         body: Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: const [
-              OrderItemDisplay(1, 'Ham'),
-              OrderItemDisplay(2, 'Turkey'),
-              OrderItemDisplay(3, 'Tuna'),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const OrderItemDisplay(5, 'Footlong'),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: () => print('Add button pressed!'),
+                    child: const Text('Add'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () => print('Remove button pressed!'),
+                    child: const Text('Remove'),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
@@ -37,12 +48,7 @@ class OrderItemDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 200,
-      height: 100,
-      color: Colors.blue,
-      child: Text('$quantity $itemType sandwich(es): ${'🥪' * quantity}'),
-    );
+    return Text('$quantity $itemType sandwich(es): ${'🥪' * quantity}');
   }
 }
 
