@@ -178,25 +178,40 @@ void main() {
       });
     });
 
-  testWidgets('Switch toggles sandwich type between six-inch and footlong',
-      (WidgetTester tester) async {
-    // Build the app.
-    await tester.pumpWidget(const App());
+  testWidgets('toggles size Switch between six-inch and footlong',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(const App());
 
-    // The order summary includes the text 'sandwich(es):' and the item type
-    // (initially 'footlong'). Find that text and verify it contains 'footlong'.
-    final Finder orderSummary = find.textContaining('sandwich(es):');
-    expect(orderSummary, findsOneWidget);
+      // initial state should show "footlong"
+      expect(find.textContaining('footlong sandwich'), findsOneWidget);
 
-    Text summaryText = tester.widget<Text>(orderSummary);
-    expect(summaryText.data ?? '', contains('footlong'));
+      // toggle to six-inch using the keyed switch
+      await tester.tap(find.byKey(const Key('size_switch')));
+      await tester.pumpAndSettle();
+      expect(find.textContaining('six-inch sandwich'), findsOneWidget);
 
-    // Find the Switch and toggle it by tapping.
-    final Finder switchFinder = find.byType(Switch);
-    expect(switchFinder, findsOneWidget);
+      // toggle back to footlong using the keyed switch
+      await tester.tap(find.byKey(const Key('size_switch')));
+      await tester.pumpAndSettle();
+      expect(find.textContaining('footlong sandwich'), findsOneWidget);
+    });
 
-    await tester.tap(switchFinder);
-    await tester.pump();
+    testWidgets('toggles toasted Switch between untoasted and toasted',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(const App());
 
-  });
+      // initial state should be untoasted
+      expect(find.text('untoasted'), findsOneWidget);
+
+      // toggle to toasted using the keyed switch
+      await tester.tap(find.byKey(const Key('toasted_switch')));
+      await tester.pumpAndSettle();
+      expect(find.text('toasted'), findsOneWidget);
+
+      // toggle back to untoasted using the keyed switch
+      await tester.tap(find.byKey(const Key('toasted_switch')));
+      await tester.pumpAndSettle();
+      expect(find.text('untoasted'), findsOneWidget);
+    });
+  
 }
